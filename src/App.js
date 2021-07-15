@@ -29,6 +29,15 @@ removeContact=(contact)=>{
  ContactAPI.remove(contact)
 }
 
+createContact=(contact)=>{
+ ContactAPI.create(contact)
+ .then(contact=>{
+   this.setState((prevState)=>({
+     contacts:prevState.contacts.concat(contact)
+   }))
+ })
+}
+
   render() {
     return (
       <div>
@@ -36,8 +45,11 @@ removeContact=(contact)=>{
         <ListContacts clickFxn={this.removeContact} contacts={this.state.contacts}/>
       )} />
 
-      <Route path="/create" render={()=>(
-        <CreateContact/>
+      <Route path="/create" render={({history})=>(
+        <CreateContact onCreateContact={(contact)=>{
+          this.createContact(contact);
+          history.push('/');
+        }}/>
       )} />
       </div>
     );
